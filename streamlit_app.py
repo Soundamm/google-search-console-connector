@@ -34,12 +34,12 @@ st.set_page_config(
 ###############################################################################
 
 # row limit
-RowCap = 25000
+RowCap = 100000
 
 
 ###############################################################################
 
-tab1, tab2 = st.tabs(["Main", "About"])
+tab1, tab2 = st.tabs(["Main", "DataFrame"])
 
 with tab1:
 
@@ -140,10 +140,6 @@ with tab1:
     container3 = st.sidebar.container()
 
     st.sidebar.write("")
-
-    st.sidebar.caption(
-        "Made in 🎈 [Streamlit](https://www.streamlit.io/), by [Charly Wargnier](https://www.charlywargnier.com/)."
-    )
 
     try:
 
@@ -843,37 +839,4 @@ with tab1:
 
 with tab2:
 
-    st.write("")
-    st.write("")
-
-    st.write(
-        """
-
-    #### About this app
-
-    * ✔️ One-click connect to the [Google Search Console API](https://developers.google.com/webmaster-tools)
-    * ✔️ Easily traverse your account hierarchy
-    * ✔️ Go beyond the [1K row UI limit](https://www.gsqi.com/marketing-blog/how-to-bulk-export-search-features-from-gsc/)
-    * ✔️ Enrich your data querying with multiple dimensions layers and extra filters!
-
-    ✍️ You can read the blog post [here](https://blog.streamlit.io/p/e89fd54e-e6cd-4e00-8a59-39e87536b260/) for more information.
-
-    #### Going beyond the `25K` row limit
-
-    * There's a `25K` row limit per API call on the [Cloud](https://streamlit.io/cloud) version to prevent crashes.
-    * You can remove that limit by forking this code and adjusting the `RowCap` variable in the `streamlit_app.py` file
-
-    #### Kudos
-
-    This app relies on Josh Carty's excellent [Search Console Python wrapper](https://github.com/joshcarty/google-searchconsole). Big kudos to him for creating it!
-
-    #### Questions, comments, or report a 🐛?
-
-    * If you have any questions or comments, please DM [me](https://twitter.com/DataChaz). Alternatively, you can ask the [Streamlit community](https://discuss.streamlit.io).
-    * If you find a bug, please raise an issue in [Github](https://github.com/CharlyWargnier/google-search-console-connector/pulls).
-
-    #### Known bugs
-    * You can filter any dimension in the table even if the dimension hasn't been pre-selected. I'm working on a fix for this.
-    
-    """
-    )
+    st.write("En construcción")
