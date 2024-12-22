@@ -2,6 +2,7 @@
 import asyncio
 import streamlit as st
 import pandas as pd
+from datetime import date, timedelta
 
 # imports for search console libraries
 import searchconsole
@@ -224,32 +225,53 @@ with tab1:
                     )
 
                 with col2:
-                    timescale = st.selectbox(
-                        "Date range",
-                        (
-                            "Last 7 days",
-                            "Last 30 days",
-                            "Last 3 months",
-                            "Last 6 months",
-                            "Last 12 months",
-                            "Last 16 months",
-                        ),
-                        index=0,
-                        help="Specify the date range",
+                    # Obtener la fecha de hoy
+                    today = date.today()
+                    # Calcular la fecha de hace 16 meses
+                    sixteen_months_ago = today - timedelta(days=486)
+                    # Widget para seleccionar la fecha de inicio
+                    start_date = st.date_input(
+                        "Fecha de inicio",
+                        value=sixteen_months_ago,  # Valor por defecto: 16 meses atrás
+                        min_value=sixteen_months_ago,  # Fecha mínima: 16 meses atrás
+                        max_value=today,  # Fecha máxima: hoy
+                        help="Selecciona la fecha de inicio del período"
+                    )
+                    # Widget para seleccionar la fecha de fin
+                    end_date = st.date_input(
+                        "Fecha de fin",
+                        value=today,  # Valor por defecto: hoy
+                        min_value=start_date,  # Fecha mínima: la fecha de inicio
+                        max_value=today,  # Fecha máxima: hoy
+                        help="Selecciona la fecha de fin del período"
                     )
 
-                    if timescale == "Last 7 days":
-                        timescale = -7
-                    elif timescale == "Last 30 days":
-                        timescale = -30
-                    elif timescale == "Last 3 months":
-                        timescale = -91
-                    elif timescale == "Last 6 months":
-                        timescale = -182
-                    elif timescale == "Last 12 months":
-                        timescale = -365
-                    elif timescale == "Last 16 months":
-                        timescale = -486
+                    # timescale = st.selectbox(
+                    #     "Date range",
+                    #     (
+                    #         "Last 7 days",
+                    #         "Last 30 days",
+                    #         "Last 3 months",
+                    #         "Last 6 months",
+                    #         "Last 12 months",
+                    #         "Last 16 months",
+                    #     ),
+                    #     index=0,
+                    #     help="Specify the date range",
+                    # )
+
+                    # if timescale == "Last 7 days":
+                    #     timescale = -7
+                    # elif timescale == "Last 30 days":
+                    #     timescale = -30
+                    # elif timescale == "Last 3 months":
+                    #     timescale = -91
+                    # elif timescale == "Last 6 months":
+                    #     timescale = -182
+                    # elif timescale == "Last 12 months":
+                    #     timescale = -365
+                    # elif timescale == "Last 16 months":
+                    #     timescale = -486
 
                 st.write("")
 
@@ -671,7 +693,7 @@ with tab1:
                 if webproperty is not None:
                     report = (
                         webproperty.query.search_type(search_type)
-                        .range("today", days=timescale)
+                        .range(start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'))
                         .dimension(dimension)
                         .filter(filter_page_or_query, filter_keyword, filter_type)
                         .filter(filter_page_or_query2, filter_keyword2, filter_type2)
@@ -691,7 +713,7 @@ with tab1:
                     # query = webproperty.query.range(start="today", days=days).dimension("query")
                     report = (
                         webproperty.query.search_type(search_type)
-                        .range("today", days=timescale)
+                        .range(start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'))
                         .dimension(dimension, nested_dimension)
                         .filter(filter_page_or_query, filter_keyword, filter_type)
                         .filter(filter_page_or_query2, filter_keyword2, filter_type2)
@@ -708,7 +730,7 @@ with tab1:
                     # query = webproperty.query.range(start="today", days=days).dimension("query")
                     report = (
                         webproperty.query.search_type(search_type)
-                        .range("today", days=timescale)
+                        .range(start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'))
                         .dimension(dimension, nested_dimension, nested_dimension_2)
                         .filter(filter_page_or_query, filter_keyword, filter_type)
                         .filter(filter_page_or_query2, filter_keyword2, filter_type2)
