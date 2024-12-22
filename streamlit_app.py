@@ -34,12 +34,12 @@ st.set_page_config(
 ###############################################################################
 
 # row limit
-RowCap = 100000
+RowCap = 25000
 
 
 ###############################################################################
 
-tab1, tab2 = st.tabs(["Main", "DataFrame"])
+tab1, tab2 = st.tabs(["Extractor GSC", "DataFrame"])
 
 with tab1:
 
@@ -667,7 +667,7 @@ with tab1:
                 else:
                     pass
 
-            def get_search_console_data(webproperty):
+            def get_search_console_data(webproperty, start_row=0):
                 if webproperty is not None:
                     report = (
                         webproperty.query.search_type(search_type)
@@ -676,7 +676,8 @@ with tab1:
                         .filter(filter_page_or_query, filter_keyword, filter_type)
                         .filter(filter_page_or_query2, filter_keyword2, filter_type2)
                         .filter(filter_page_or_query3, filter_keyword3, filter_type3)
-                        .limit(RowCap)
+                        .start_row(start_row)
+                        .row_limit(RowCap)
                         .get()
                         .to_dataframe()
                     )
@@ -685,7 +686,7 @@ with tab1:
                     st.warning("No webproperty found")
                     st.stop()
 
-            def get_search_console_data_nested(webproperty):
+            def get_search_console_data_nested(webproperty, start_row=0):
                 if webproperty is not None:
                     # query = webproperty.query.range(start="today", days=days).dimension("query")
                     report = (
@@ -695,13 +696,14 @@ with tab1:
                         .filter(filter_page_or_query, filter_keyword, filter_type)
                         .filter(filter_page_or_query2, filter_keyword2, filter_type2)
                         .filter(filter_page_or_query3, filter_keyword3, filter_type3)
-                        .limit(RowCap)
+                        .start_row(start_row)
+                        .row_limit(RowCap)
                         .get()
                         .to_dataframe()
                     )
                     return report
 
-            def get_search_console_data_nested_2(webproperty):
+            def get_search_console_data_nested_2(webproperty, start_row=0):
                 if webproperty is not None:
                     # query = webproperty.query.range(start="today", days=days).dimension("query")
                     report = (
@@ -711,7 +713,8 @@ with tab1:
                         .filter(filter_page_or_query, filter_keyword, filter_type)
                         .filter(filter_page_or_query2, filter_keyword2, filter_type2)
                         .filter(filter_page_or_query3, filter_keyword3, filter_type3)
-                        .limit(RowCap)
+                        .start_row(start_row)
+                        .row_limit(RowCap)
                         .get()
                         .to_dataframe()
                     )
@@ -722,10 +725,16 @@ with tab1:
             if nested_dimension == "none" and nested_dimension_2 == "none":
 
                 webproperty = account[webpropertiesNEW]
+                all_data = pd.DataFrame()
+                current_start_row = 0
+                df = get_search_console_data(webproperty, current_start_row)
 
-                df = get_search_console_data(webproperty)
+                while not df.empty:
+                    all_data = pd.concat([all_data, df])
+                    current_start_row += RowCap  # Usamos RowCap aquí
+                    df = get_search_console_data(webproperty, current_start_row)
 
-                if df.empty:
+                if all_data.empty:
                     st.warning(
                         "🚨 There's no data for your selection, please refine your search with different criteria"
                     )
@@ -734,10 +743,17 @@ with tab1:
             elif nested_dimension_2 == "none":
 
                 webproperty = account[webpropertiesNEW]
+                all_data = pd.DataFrame()
+                current_start_row = 0
 
-                df = get_search_console_data_nested(webproperty)
+                df = get_search_console_data_nested(webproperty, current_start_row)
 
-                if df.empty:
+                while not df.empty:
+                    all_data = pd.concat([all_data, df])
+                    current_start_row += RowCap
+                    df = get_search_console_data_nested(webproperty, current_start_row)
+
+                if all_data.empty:
                     st.warning(
                         "🚨 DataFrame is empty! Please refine your search with different criteria"
                     )
@@ -746,10 +762,17 @@ with tab1:
             else:
 
                 webproperty = account[webpropertiesNEW]
+                all_data = pd.DataFrame()
+                current_start_row = 0
 
-                df = get_search_console_data_nested_2(webproperty)
+                df = get_search_console_data_nested_2(webproperty, current_start_row)
 
-                if df.empty:
+                while not df.empty:
+                    all_data = pd.concat([all_data, df])
+                    current_start_row += RowCap  
+                    df = get_search_console_data_nested_2(webproperty, current_start_row)
+
+                if all_data.empty:
                     st.warning(
                         "🚨 DataFrame is empty! Please refine your search with different criteria"
                     )
@@ -759,7 +782,7 @@ with tab1:
 
             st.write(
                 "##### # of results returned by API call: ",
-                len(df.index),
+                len(all_data.index),
             )
 
             col1, col2, col3 = st.columns([1, 1, 1])
