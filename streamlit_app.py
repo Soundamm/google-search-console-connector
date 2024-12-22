@@ -111,13 +111,13 @@ with tab1:
         auth_url, _ = flow.authorization_url(prompt="consent")
 
         submit_button = st.form_submit_button(
-            label="Access GSC API", on_click=charly_form_callback
+            label="Click aquí para conectarte a la API", on_click=charly_form_callback
         )
 
         st.write("")
 
 
-        with st.expander("Check your Oauth token"):
+        with st.expander("Comprobar Oauth token"):
             code = st.text_input(
                 "",
                 key="my_token_input",
