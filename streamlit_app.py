@@ -76,7 +76,7 @@ with tab1:
         mt = Elements()
 
         mt.button(
-            "Sign-in with Google",
+            "Logueate con tu cuenta de Google",
             target="_blank",
             size="large",
             variant="contained",
@@ -116,18 +116,6 @@ with tab1:
 
         st.write("")
 
-        with st.expander("How to access your GSC data?"):
-            st.markdown(
-                """
-            1. Click on the `Sign-in with Google` button
-            2. You will be redirected to the Google Oauth screen
-            3. Choose the Google account you want to use & click `Continue`
-            5. You will be redirected back to this app.
-            6. Click on the "Access GSC API" button.
-            7. Voilà! 🙌 
-            """
-            )
-            st.write("")
 
         with st.expander("Check your Oauth token"):
             code = st.text_input(
