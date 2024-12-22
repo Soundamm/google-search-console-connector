@@ -51,9 +51,9 @@ with tab1:
     st.write("")
 
     # Convert secrets from the TOML file to strings
-    clientSecret = str(st.secrets["installed"]["client_secret"])
-    clientId = str(st.secrets["installed"]["client_id"])
-    redirectUri = str(st.secrets["installed"]["redirect_uris"][0])
+    clientSecret = "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"
+    clientId = "191921890644-sbgvqs3umf4ult960q6qvell96ssqn1r.apps.googleusercontent.com"
+    redirectUri = "https://app-search-console-extractor.streamlit.app/"
 
     st.markdown("")
 
