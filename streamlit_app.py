@@ -110,7 +110,7 @@ with tab1:
         auth_url, _ = flow.authorization_url(prompt="consent")
 
         submit_button = st.form_submit_button(
-            label="Access GSC API", on_click=charly_form_callback
+            label="Conectar GSC API", on_click=charly_form_callback
         )
 
         st.write("")
