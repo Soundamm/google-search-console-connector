@@ -697,17 +697,15 @@ with tab1:
                 else:
                     pass
 
-            def get_search_console_data(webproperty, start_row=0):
+            def get_search_console_data(webproperty):
                 if webproperty is not None:
                     report = (
                         webproperty.query.search_type(search_type)
-                        .range(start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'))
+                        .range(start_date, end_date)
                         .dimension(dimension)
                         .filter(filter_page_or_query, filter_keyword, filter_type)
                         .filter(filter_page_or_query2, filter_keyword2, filter_type2)
                         .filter(filter_page_or_query3, filter_keyword3, filter_type3)
-                        .start_row(start_row)  # Método .start_row() antes de .get()
-                        .row_limit(RowCap)  # Método .row_limit() antes de .get()
                         .get()
                         .to_dataframe()
                     )
@@ -716,32 +714,30 @@ with tab1:
                     st.warning("No webproperty found")
                     st.stop()
 
-            def get_search_console_data_nested(webproperty, start_row=0):
+            def get_search_console_data_nested(webproperty):
                 if webproperty is not None:
-                    # query = webproperty.query.range(start="today", days=days).dimension("query")
                     report = (
                         webproperty.query.search_type(search_type)
-                        .range(start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'))
+                        .range(start_date, end_date)
                         .dimension(dimension, nested_dimension)
                         .filter(filter_page_or_query, filter_keyword, filter_type)
                         .filter(filter_page_or_query2, filter_keyword2, filter_type2)
                         .filter(filter_page_or_query3, filter_keyword3, filter_type3)
-                        .get(start_row=start_row, row_limit=RowCap)
+                        .get()
                         .to_dataframe()
                     )
                     return report
 
-            def get_search_console_data_nested_2(webproperty, start_row=0):
+            def get_search_console_data_nested_2(webproperty):
                 if webproperty is not None:
-                    # query = webproperty.query.range(start="today", days=days).dimension("query")
                     report = (
                         webproperty.query.search_type(search_type)
-                        .range(start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'))
+                        .range(start_date, end_date)
                         .dimension(dimension, nested_dimension, nested_dimension_2)
                         .filter(filter_page_or_query, filter_keyword, filter_type)
                         .filter(filter_page_or_query2, filter_keyword2, filter_type2)
                         .filter(filter_page_or_query3, filter_keyword3, filter_type3)
-                        .get(start_row=start_row, row_limit=RowCap)
+                        .get()
                         .to_dataframe()
                     )
                     return report
