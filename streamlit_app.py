@@ -768,7 +768,7 @@ with tab1:
                 all_data = pd.DataFrame()
                 current_start_row = 0
 
-                df = get_search_console_data_nested(webproperty, current_start_row)
+                df = get_search_console_data_nested(webproperty)
 
                 while not df.empty:
                     all_data = pd.concat([all_data, df])
