@@ -717,17 +717,58 @@ with tab1:
             def get_search_console_data_nested(webproperty, start_row=0):
                 if webproperty is not None:
                     # query = webproperty.query.range(start="today", days=days).dimension("query")
-                    report = (
-                        webproperty.query.search_type(search_type)
-                        .range(start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'))
-                        .dimension(dimension, nested_dimension)
-                        .filter(filter_page_or_query, filter_keyword, filter_type)
-                        .filter(filter_page_or_query2, filter_keyword2, filter_type2)
-                        .filter(filter_page_or_query3, filter_keyword3, filter_type3)
-                        .get(start_row=start_row, row_limit=RowCap)
-                        .to_dataframe()
-                    )
+                    # report = (
+                    #     webproperty.query.search_type(search_type)
+                    #     .range(start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'))
+                    #     .dimension(dimension, nested_dimension)
+                    #     .filter(filter_page_or_query, filter_keyword, filter_type)
+                    #     .filter(filter_page_or_query2, filter_keyword2, filter_type2)
+                    #     .filter(filter_page_or_query3, filter_keyword3, filter_type3)
+                    #     .get(start_row=start_row, row_limit=RowCap)
+                    #     .to_dataframe()
+                    # )
+                    request = {
+                        'startDate': start_date.strftime('%Y-%m-%d'),
+                        'endDate': end_date.strftime('%Y-%m-%d'),
+                        'dimensions': [dimension],
+                        'searchType': search_type,
+                        'startRow': start_row,
+                        'rowLimit': RowCap
+                    }
+        
+                    # Agregar filtros solo si se han especificado
+                    if filter_keyword:
+                        if 'dimensionFilterGroups' not in request:
+                            request['dimensionFilterGroups'] = [{'filters': []}]
+                        request['dimensionFilterGroups'][0]['filters'].append({
+                            'dimension': filter_page_or_query,
+                            'operator': filter_type,
+                            'expression': filter_keyword
+                        })
+                    
+                    if filter_keyword2:
+                        if 'dimensionFilterGroups' not in request:
+                            request['dimensionFilterGroups'] = [{'filters': []}]
+                        request['dimensionFilterGroups'][0]['filters'].append({
+                            'dimension': filter_page_or_query2,
+                            'operator': filter_type2,
+                            'expression': filter_keyword2
+                        })
+                    
+                    if filter_keyword3:
+                        if 'dimensionFilterGroups' not in request:
+                            request['dimensionFilterGroups'] = [{'filters': []}]
+                        request['dimensionFilterGroups'][0]['filters'].append({
+                            'dimension': filter_page_or_query3,
+                            'operator': filter_type3,
+                            'expression': filter_keyword3
+                        })
+                    
+                    report = webproperty.query.search_analytics(request).to_dataframe()
                     return report
+                else:
+                    st.warning("No webproperty found")
+                    st.stop()
 
             def get_search_console_data_nested_2(webproperty, start_row=0):
                 if webproperty is not None:
