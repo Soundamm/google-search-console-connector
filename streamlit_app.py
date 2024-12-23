@@ -34,12 +34,12 @@ st.set_page_config(
 ###############################################################################
 
 # row limit
-RowCap = 35000
+RowCap = 100000
 
 
 ###############################################################################
 
-tab1, tab2 = st.tabs(["Main", "About"])
+tab1, tab2 = st.tabs(["Extractor", "Dataframe"])
 
 with tab1:
 
@@ -75,7 +75,7 @@ with tab1:
         mt = Elements()
 
         mt.button(
-            "Sign-in with Google",
+            "Logueate con tu cuenta de Google",
             target="_blank",
             size="large",
             variant="contained",
@@ -115,20 +115,8 @@ with tab1:
 
         st.write("")
 
-        with st.expander("How to access your GSC data?"):
-            st.markdown(
-                """
-            1. Click on the `Sign-in with Google` button
-            2. You will be redirected to the Google Oauth screen
-            3. Choose the Google account you want to use & click `Continue`
-            5. You will be redirected back to this app.
-            6. Click on the "Access GSC API" button.
-            7. Voilà! 🙌 
-            """
-            )
-            st.write("")
 
-        with st.expander("Check your Oauth token"):
+        with st.expander("Comprobar Oauth token"):
             code = st.text_input(
                 "",
                 key="my_token_input",
@@ -167,7 +155,7 @@ with tab1:
 
                 with col1:
                     dimension = st.selectbox(
-                        "Dimension",
+                        "Dimension 1",
                         (
                             "query",
                             "page",
@@ -181,7 +169,7 @@ with tab1:
 
                 with col2:
                     nested_dimension = st.selectbox(
-                        "Nested dimension",
+                        "Dimension 2",
                         (
                             "none",
                             "query",
@@ -196,7 +184,7 @@ with tab1:
 
                 with col3:
                     nested_dimension_2 = st.selectbox(
-                        "Nested dimension 2",
+                        "Dimension 3",
                         (
                             "none",
                             "query",
@@ -802,7 +790,7 @@ with tab1:
             st.write("")
 
             st.write(
-                "##### # of results returned by API call: ",
+                "##### Nº de resultados devueltos por API: ",
                 len(df.index),
             )
 
@@ -889,31 +877,6 @@ with tab2:
     st.write(
         """
 
-    #### About this app
-
-    * ✔️ One-click connect to the [Google Search Console API](https://developers.google.com/webmaster-tools)
-    * ✔️ Easily traverse your account hierarchy
-    * ✔️ Go beyond the [1K row UI limit](https://www.gsqi.com/marketing-blog/how-to-bulk-export-search-features-from-gsc/)
-    * ✔️ Enrich your data querying with multiple dimensions layers and extra filters!
-
-    ✍️ You can read the blog post [here](https://blog.streamlit.io/p/e89fd54e-e6cd-4e00-8a59-39e87536b260/) for more information.
-
-    #### Going beyond the `25K` row limit
-
-    * There's a `25K` row limit per API call on the [Cloud](https://streamlit.io/cloud) version to prevent crashes.
-    * You can remove that limit by forking this code and adjusting the `RowCap` variable in the `streamlit_app.py` file
-
-    #### Kudos
-
-    This app relies on Josh Carty's excellent [Search Console Python wrapper](https://github.com/joshcarty/google-searchconsole). Big kudos to him for creating it!
-
-    #### Questions, comments, or report a 🐛?
-
-    * If you have any questions or comments, please DM [me](https://twitter.com/DataChaz). Alternatively, you can ask the [Streamlit community](https://discuss.streamlit.io).
-    * If you find a bug, please raise an issue in [Github](https://github.com/CharlyWargnier/google-search-console-connector/pulls).
-
-    #### Known bugs
-    * You can filter any dimension in the table even if the dimension hasn't been pre-selected. I'm working on a fix for this.
-    
-    """
+    #### En construcción
+        """
     )
