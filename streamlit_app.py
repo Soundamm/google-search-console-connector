@@ -11,7 +11,6 @@ from google_auth_oauthlib.flow import Flow
 
 # imports for aggrid
 from st_aggrid import AgGrid
-from st_aggrid import AgGrid
 from st_aggrid.grid_options_builder import GridOptionsBuilder
 from st_aggrid.shared import JsCode
 from st_aggrid import GridUpdateMode, DataReturnMode
@@ -35,7 +34,7 @@ st.set_page_config(
 ###############################################################################
 
 # row limit
-RowCap = 25000
+RowCap = 100000
 
 
 ###############################################################################
@@ -748,12 +747,10 @@ with tab1:
 
                 webproperty = account[webpropertiesNEW]
                 all_data = pd.DataFrame()
-                current_start_row = 0
                 df = get_search_console_data(webproperty)
 
                 while not df.empty:
                     all_data = pd.concat([all_data, df])
-                    current_start_row += RowCap  # Usamos RowCap aquí
                     df = get_search_console_data(webproperty)
 
                 if all_data.empty:
@@ -766,13 +763,11 @@ with tab1:
 
                 webproperty = account[webpropertiesNEW]
                 all_data = pd.DataFrame()
-                current_start_row = 0
 
                 df = get_search_console_data_nested(webproperty)
 
                 while not df.empty:
                     all_data = pd.concat([all_data, df])
-                    current_start_row += RowCap
                     df = get_search_console_data_nested(webproperty)
 
                 if all_data.empty:
@@ -785,13 +780,11 @@ with tab1:
 
                 webproperty = account[webpropertiesNEW]
                 all_data = pd.DataFrame()
-                current_start_row = 0
 
                 df = get_search_console_data_nested_2(webproperty)
 
                 while not df.empty:
-                    all_data = pd.concat([all_data, df])
-                    current_start_row += RowCap  
+                    all_data = pd.concat([all_data, df]) 
                     df = get_search_console_data_nested_2(webproperty)
 
                 if all_data.empty:
