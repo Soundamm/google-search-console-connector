@@ -2,7 +2,6 @@
 import asyncio
 import streamlit as st
 import pandas as pd
-from datetime import date, timedelta
 
 # imports for search console libraries
 import searchconsole
@@ -34,12 +33,12 @@ st.set_page_config(
 ###############################################################################
 
 # row limit
-RowCap = 100000
+RowCap = 25000
 
 
 ###############################################################################
 
-tab1, tab2 = st.tabs(["Extractor GSC", "DataFrame"])
+tab1, tab2 = st.tabs(["Main", "About"])
 
 with tab1:
 
@@ -50,9 +49,9 @@ with tab1:
     st.write("")
 
     # Convert secrets from the TOML file to strings
-    clientSecret = "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"
-    clientId = "191921890644-fm7o55ra56ciiimv4nt0a4k632btdkd3.apps.googleusercontent.com"
-    redirectUri = "https://app-search-console-extractor.streamlit.app"
+    clientSecret = str(st.secrets["installed"]["client_secret"])
+    clientId = str(st.secrets["installed"]["client_id"])
+    redirectUri = str(st.secrets["installed"]["redirect_uris"][0])
 
     st.markdown("")
 
@@ -75,7 +74,7 @@ with tab1:
         mt = Elements()
 
         mt.button(
-            "Logueate con tu cuenta de Google",
+            "Sign-in with Google",
             target="_blank",
             size="large",
             variant="contained",
@@ -110,13 +109,25 @@ with tab1:
         auth_url, _ = flow.authorization_url(prompt="consent")
 
         submit_button = st.form_submit_button(
-            label="Click aquí para conectarte a la API", on_click=charly_form_callback
+            label="Access GSC API", on_click=charly_form_callback
         )
 
         st.write("")
 
+        with st.expander("How to access your GSC data?"):
+            st.markdown(
+                """
+            1. Click on the `Sign-in with Google` button
+            2. You will be redirected to the Google Oauth screen
+            3. Choose the Google account you want to use & click `Continue`
+            5. You will be redirected back to this app.
+            6. Click on the "Access GSC API" button.
+            7. Voilà! 🙌 
+            """
+            )
+            st.write("")
 
-        with st.expander("Comprobar Oauth token"):
+        with st.expander("Check your Oauth token"):
             code = st.text_input(
                 "",
                 key="my_token_input",
@@ -128,6 +139,10 @@ with tab1:
     container3 = st.sidebar.container()
 
     st.sidebar.write("")
+
+    st.sidebar.caption(
+        "Made in 🎈 [Streamlit](https://www.streamlit.io/), by [Charly Wargnier](https://www.charlywargnier.com/)."
+    )
 
     try:
 
@@ -212,53 +227,32 @@ with tab1:
                     )
 
                 with col2:
-                    # Obtener la fecha de hoy
-                    today = date.today()
-                    # Calcular la fecha de hace 16 meses
-                    sixteen_months_ago = today - timedelta(days=486)
-                    # Widget para seleccionar la fecha de inicio
-                    start_date = st.date_input(
-                        "Fecha de inicio",
-                        value=sixteen_months_ago,  # Valor por defecto: 16 meses atrás
-                        min_value=sixteen_months_ago,  # Fecha mínima: 16 meses atrás
-                        max_value=today,  # Fecha máxima: hoy
-                        help="Selecciona la fecha de inicio del período"
-                    )
-                    # Widget para seleccionar la fecha de fin
-                    end_date = st.date_input(
-                        "Fecha de fin",
-                        value=today,  # Valor por defecto: hoy
-                        min_value=start_date,  # Fecha mínima: la fecha de inicio
-                        max_value=today,  # Fecha máxima: hoy
-                        help="Selecciona la fecha de fin del período"
+                    timescale = st.selectbox(
+                        "Date range",
+                        (
+                            "Last 7 days",
+                            "Last 30 days",
+                            "Last 3 months",
+                            "Last 6 months",
+                            "Last 12 months",
+                            "Last 16 months",
+                        ),
+                        index=0,
+                        help="Specify the date range",
                     )
 
-                    # timescale = st.selectbox(
-                    #     "Date range",
-                    #     (
-                    #         "Last 7 days",
-                    #         "Last 30 days",
-                    #         "Last 3 months",
-                    #         "Last 6 months",
-                    #         "Last 12 months",
-                    #         "Last 16 months",
-                    #     ),
-                    #     index=0,
-                    #     help="Specify the date range",
-                    # )
-
-                    # if timescale == "Last 7 days":
-                    #     timescale = -7
-                    # elif timescale == "Last 30 days":
-                    #     timescale = -30
-                    # elif timescale == "Last 3 months":
-                    #     timescale = -91
-                    # elif timescale == "Last 6 months":
-                    #     timescale = -182
-                    # elif timescale == "Last 12 months":
-                    #     timescale = -365
-                    # elif timescale == "Last 16 months":
-                    #     timescale = -486
+                    if timescale == "Last 7 days":
+                        timescale = -7
+                    elif timescale == "Last 30 days":
+                        timescale = -30
+                    elif timescale == "Last 3 months":
+                        timescale = -91
+                    elif timescale == "Last 6 months":
+                        timescale = -182
+                    elif timescale == "Last 12 months":
+                        timescale = -365
+                    elif timescale == "Last 16 months":
+                        timescale = -486
 
                 st.write("")
 
@@ -502,52 +496,32 @@ with tab1:
                         )
 
                     with col2:
-                        # timescale = st.selectbox(
-                        #     "Date range",
-                        #     (
-                        #         "Last 7 days",
-                        #         "Last 30 days",
-                        #         "Last 3 months",
-                        #         "Last 6 months",
-                        #         "Last 12 months",
-                        #         "Last 16 months",
-                        #     ),
-                        #     index=0,
-                        #     help="Specify the date range",
-                        # )
+                        timescale = st.selectbox(
+                            "Date range",
+                            (
+                                "Last 7 days",
+                                "Last 30 days",
+                                "Last 3 months",
+                                "Last 6 months",
+                                "Last 12 months",
+                                "Last 16 months",
+                            ),
+                            index=0,
+                            help="Specify the date range",
+                        )
 
-                        # if timescale == "Last 7 days":
-                        #     timescale = -7
-                        # elif timescale == "Last 30 days":
-                        #     timescale = -30
-                        # elif timescale == "Last 3 months":
-                        #     timescale = -91
-                        # elif timescale == "Last 6 months":
-                        #     timescale = -182
-                        # elif timescale == "Last 12 months":
-                        #     timescale = -365
-                        # elif timescale == "Last 16 months":
-                        #     timescale = -486
-                        # Obtener la fecha de hoy
-                        today = date.today()
-                        # Calcular la fecha de hace 16 meses
-                        sixteen_months_ago = today - timedelta(days=486)
-                        # Widget para seleccionar la fecha de inicio
-                        start_date = st.date_input(
-                            "Fecha de inicio",
-                            value=sixteen_months_ago,  # Valor por defecto: 16 meses atrás
-                            min_value=sixteen_months_ago,  # Fecha mínima: 16 meses atrás
-                            max_value=today,  # Fecha máxima: hoy
-                            help="Selecciona la fecha de inicio del período"
-                        )
-                        # Widget para seleccionar la fecha de fin
-                        end_date = st.date_input(
-                            "Fecha de fin",
-                            value=today,  # Valor por defecto: hoy
-                            min_value=start_date,  # Fecha mínima: la fecha de inicio
-                            max_value=today,  # Fecha máxima: hoy
-                            help="Selecciona la fecha de fin del período"
-                        )
+                        if timescale == "Last 7 days":
+                            timescale = -7
+                        elif timescale == "Last 30 days":
+                            timescale = -30
+                        elif timescale == "Last 3 months":
+                            timescale = -91
+                        elif timescale == "Last 6 months":
+                            timescale = -182
+                        elif timescale == "Last 12 months":
+                            timescale = -365
+                        elif timescale == "Last 16 months":
+                            timescale = -486
 
                     st.write("")
 
@@ -700,7 +674,7 @@ with tab1:
                 if webproperty is not None:
                     report = (
                         webproperty.query.search_type(search_type)
-                        .range(start_date, end_date)
+                        .range("today", days=timescale)
                         .dimension(dimension)
                         .filter(filter_page_or_query, filter_keyword, filter_type)
                         .filter(filter_page_or_query2, filter_keyword2, filter_type2)
@@ -716,9 +690,10 @@ with tab1:
 
             def get_search_console_data_nested(webproperty):
                 if webproperty is not None:
+                    # query = webproperty.query.range(start="today", days=days).dimension("query")
                     report = (
                         webproperty.query.search_type(search_type)
-                        .range(start_date, end_date)
+                        .range("today", days=timescale)
                         .dimension(dimension, nested_dimension)
                         .filter(filter_page_or_query, filter_keyword, filter_type)
                         .filter(filter_page_or_query2, filter_keyword2, filter_type2)
@@ -731,9 +706,10 @@ with tab1:
 
             def get_search_console_data_nested_2(webproperty):
                 if webproperty is not None:
+                    # query = webproperty.query.range(start="today", days=days).dimension("query")
                     report = (
                         webproperty.query.search_type(search_type)
-                        .range(start_date, end_date)
+                        .range("today", days=timescale)
                         .dimension(dimension, nested_dimension, nested_dimension_2)
                         .filter(filter_page_or_query, filter_keyword, filter_type)
                         .filter(filter_page_or_query2, filter_keyword2, filter_type2)
@@ -749,14 +725,10 @@ with tab1:
             if nested_dimension == "none" and nested_dimension_2 == "none":
 
                 webproperty = account[webpropertiesNEW]
-                all_data = pd.DataFrame()
+
                 df = get_search_console_data(webproperty)
 
-                while not df.empty:
-                    all_data = pd.concat([all_data, df])
-                    df = get_search_console_data(webproperty)
-
-                if all_data.empty:
+                if df.empty:
                     st.warning(
                         "🚨 There's no data for your selection, please refine your search with different criteria"
                     )
@@ -765,15 +737,10 @@ with tab1:
             elif nested_dimension_2 == "none":
 
                 webproperty = account[webpropertiesNEW]
-                all_data = pd.DataFrame()
 
                 df = get_search_console_data_nested(webproperty)
 
-                while not df.empty:
-                    all_data = pd.concat([all_data, df])
-                    df = get_search_console_data_nested(webproperty)
-
-                if all_data.empty:
+                if df.empty:
                     st.warning(
                         "🚨 DataFrame is empty! Please refine your search with different criteria"
                     )
@@ -782,15 +749,10 @@ with tab1:
             else:
 
                 webproperty = account[webpropertiesNEW]
-                all_data = pd.DataFrame()
 
                 df = get_search_console_data_nested_2(webproperty)
 
-                while not df.empty:
-                    all_data = pd.concat([all_data, df]) 
-                    df = get_search_console_data_nested_2(webproperty)
-
-                if all_data.empty:
+                if df.empty:
                     st.warning(
                         "🚨 DataFrame is empty! Please refine your search with different criteria"
                     )
@@ -800,7 +762,7 @@ with tab1:
 
             st.write(
                 "##### # of results returned by API call: ",
-                len(all_data.index),
+                len(df.index),
             )
 
             col1, col2, col3 = st.columns([1, 1, 1])
@@ -880,4 +842,37 @@ with tab1:
 
 with tab2:
 
-    st.write("En construcción")
+    st.write("")
+    st.write("")
+
+    st.write(
+        """
+
+    #### About this app
+
+    * ✔️ One-click connect to the [Google Search Console API](https://developers.google.com/webmaster-tools)
+    * ✔️ Easily traverse your account hierarchy
+    * ✔️ Go beyond the [1K row UI limit](https://www.gsqi.com/marketing-blog/how-to-bulk-export-search-features-from-gsc/)
+    * ✔️ Enrich your data querying with multiple dimensions layers and extra filters!
+
+    ✍️ You can read the blog post [here](https://blog.streamlit.io/p/e89fd54e-e6cd-4e00-8a59-39e87536b260/) for more information.
+
+    #### Going beyond the `25K` row limit
+
+    * There's a `25K` row limit per API call on the [Cloud](https://streamlit.io/cloud) version to prevent crashes.
+    * You can remove that limit by forking this code and adjusting the `RowCap` variable in the `streamlit_app.py` file
+
+    #### Kudos
+
+    This app relies on Josh Carty's excellent [Search Console Python wrapper](https://github.com/joshcarty/google-searchconsole). Big kudos to him for creating it!
+
+    #### Questions, comments, or report a 🐛?
+
+    * If you have any questions or comments, please DM [me](https://twitter.com/DataChaz). Alternatively, you can ask the [Streamlit community](https://discuss.streamlit.io).
+    * If you find a bug, please raise an issue in [Github](https://github.com/CharlyWargnier/google-search-console-connector/pulls).
+
+    #### Known bugs
+    * You can filter any dimension in the table even if the dimension hasn't been pre-selected. I'm working on a fix for this.
+    
+    """
+    )
