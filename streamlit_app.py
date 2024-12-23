@@ -2,6 +2,7 @@
 import asyncio
 import streamlit as st
 import pandas as pd
+from datetime import date, timedelta
 
 # imports for search console libraries
 import searchconsole
