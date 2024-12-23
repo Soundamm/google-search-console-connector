@@ -8,6 +8,8 @@ from datetime import date, timedelta
 import searchconsole
 from apiclient import discovery
 from google_auth_oauthlib.flow import Flow
+import requests
+requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS = 'TLSv1.2' 
 
 # imports for aggrid
 from st_aggrid import AgGrid
