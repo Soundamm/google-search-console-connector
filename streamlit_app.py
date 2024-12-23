@@ -706,9 +706,7 @@ with tab1:
                         .filter(filter_page_or_query, filter_keyword, filter_type)
                         .filter(filter_page_or_query2, filter_keyword2, filter_type2)
                         .filter(filter_page_or_query3, filter_keyword3, filter_type3)
-                        .start(start_row)
-                        .limit(RowCap)
-                        .get()
+                        .get(start_row=start_row, row_limit=RowCap)
                         .to_dataframe()
                     )
                     return report
@@ -726,9 +724,7 @@ with tab1:
                         .filter(filter_page_or_query, filter_keyword, filter_type)
                         .filter(filter_page_or_query2, filter_keyword2, filter_type2)
                         .filter(filter_page_or_query3, filter_keyword3, filter_type3)
-                        .start(start_row)
-                        .limit(RowCap)
-                        .get()
+                        .get(start_row=start_row, row_limit=RowCap)
                         .to_dataframe()
                     )
                     return report
@@ -743,9 +739,7 @@ with tab1:
                         .filter(filter_page_or_query, filter_keyword, filter_type)
                         .filter(filter_page_or_query2, filter_keyword2, filter_type2)
                         .filter(filter_page_or_query3, filter_keyword3, filter_type3)
-                        .start(start_row)
-                        .limit(RowCap)
-                        .get()
+                        .get(start_row=start_row, row_limit=RowCap)
                         .to_dataframe()
                     )
                     return report
