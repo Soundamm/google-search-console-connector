@@ -2,6 +2,7 @@
 import asyncio
 import streamlit as st
 import pandas as pd
+import re
 from datetime import date, timedelta
 
 # imports for search console libraries
@@ -867,12 +868,35 @@ with tab1:
 
 with tab2:
 
-    st.write("")
+    st.write("Tabla comparativa de períodos")
     st.write("")
 
-    st.write(
-        """
+    # Campos para subir los archivos CSV
+    uploaded_file_pre = st.file_uploader("Sube el archivo CSV del primer periodo", type="csv")
+    uploaded_file_post = st.file_uploader("Sube el archivo CSV del segundo periodo", type="csv")
 
-    #### En construcción
-        """
-    )
+    if uploaded_file_pre and uploaded_file_post:
+        # Leer los datos de los archivos CSV
+        df_pre = pd.read_csv(uploaded_file_pre)
+        df_post = pd.read_csv(uploaded_file_post)
+
+        try:
+            # Unir los dos DataFrames, validando que no haya duplicados
+            df = pd.merge(df_pre, df_post, on=["Page", "Query"], how="outer", suffixes=("_pre", "_post"), validate="one_to_one")
+
+            # ... (código para crear las columnas "Tipología", "Brand/No Brand", "Dif", "Estado" y "Exclusion")
+
+            # Mostrar el DataFrame resultante
+            st.dataframe(df)
+
+            # Botón para descargar el DataFrame como CSV
+            csv = df.to_csv(index=False).encode('utf-8')
+            st.download_button(
+                label="Descargar CSV",
+                data=csv,
+                file_name='dataframe_unificado.csv',
+                mime='text/csv',
+            )
+
+        except pd.errors.MergeError:
+            st.error("Error: Se encontraron duplas de 'Page' y 'Query' en los archivos CSV. Por favor, revisa tus archivos e intenta de nuevo.")
