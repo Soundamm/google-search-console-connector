@@ -137,7 +137,7 @@ with tab1:
 
                 # text_input_container = st.empty()
                 webpropertiesNEW = st.text_input(
-                    "Web property to review (please sign in via Google OAuth first)",
+                    "Seleccionar propiedad web (autentificate primero en el panel izquierdo)",
                     value="",
                     disabled=True,
                 )
