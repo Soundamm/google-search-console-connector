@@ -868,7 +868,14 @@ with tab1:
 
 with tab2:
 
-    st.write("Tabla comparativa de períodos")
+import streamlit as st
+import pandas as pd
+import re
+
+# ... (código existente)
+
+with tab2:
+    st.write("")
     st.write("")
 
     # Campos para subir los archivos CSV
@@ -882,9 +889,53 @@ with tab2:
 
         try:
             # Unir los dos DataFrames, validando que no haya duplicados
-            df = pd.merge(df_pre, df_post, on=["Page", "Query"], how="outer", suffixes=("_pre", "_post"), validate="one_to_one")
+            df = pd.merge(df_pre, df_post, on=["page", "query"], how="outer", suffixes=("_pre", "_post"), validate="one_to_one")
 
-            # ... (código para crear las columnas "Tipología", "Brand/No Brand", "Dif", "Estado" y "Exclusion")
+            # Crear la columna "Tipología"
+            def obtener_tipologia(pagina):
+                if re.search(r"categoria", pagina):
+                    return "Categoria"
+                elif re.search(r"producto", pagina):
+                    return "Producto"
+                else:
+                    return "Otro"
+            df["Tipología"] = df["page"].apply(obtener_tipologia)
+
+            # Crear la columna "Brand/No Brand"
+            def brand_no_brand(pagina):
+                if re.search(r"nombre_marca", pagina):
+                    return "Brand"
+                else:
+                    return "No Brand"
+            df["Brand/No Brand"] = df["page"].apply(brand_no_brand)
+
+            # Rellenar valores nulos con 0
+            df.fillna(0, inplace=True)
+
+            # Calcular las columnas "Dif", "Estado" y "Exclusion"
+            df["Dif"] = df["position_pre"] - df["position_post"]
+
+            def calcular_estado(row):
+                if row["impressions_post"] == 0:
+                    return "Perdida"
+                elif row["impressions_pre"] == 0 and row["impressions_post"] > 0:
+                    return "Ganada"
+                elif row["Dif"] > 0:
+                    return "Mejora"
+                elif row["Dif"] < 0:
+                    return "Empeora"
+                elif -0.5 <= row["Dif"] <= 0.5:
+                    return "Sin cambios"
+                else:
+                    return "Otro"
+            df["Estado"] = df.apply(calcular_estado, axis=1)
+
+            def calcular_exclusion(estado):
+                if estado in ("Perdida", "Ganada"):
+                    return "Si"
+                else:
+                    return "No"
+            df["Exclusion"] = df["Estado"].apply(calcular_exclusion)
 
             # Mostrar el DataFrame resultante
             st.dataframe(df)
@@ -899,4 +950,4 @@ with tab2:
             )
 
         except pd.errors.MergeError:
-            st.error("Error: Se encontraron duplas de 'Page' y 'Query' en los archivos CSV. Por favor, revisa tus archivos e intenta de nuevo.")
+            st.error("Error: Se encontraron duplas de 'page' y 'query' en los archivos CSV. Por favor, revisa tus archivos e intenta de nuevo.")
