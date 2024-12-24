@@ -866,6 +866,7 @@ with tab1:
             "⛔ It seems you haven’t correctly configured Google Search Console! Click [here](https://support.google.com/webmasters/answer/9008080?hl=en) for more information on how to get started!"
         )
 
+
 with tab2:
     st.write("")
     st.write("")
@@ -928,6 +929,25 @@ with tab2:
                 else:
                     return "No"
             df["Exclusion"] = df["Estado"].apply(calcular_exclusion)
+
+            # Seleccionar las columnas y el orden deseado
+            df = df[["page", "Tipología", "Brand/No Brand", "query", "clicks_pre", "clicks_post", 
+                     "impressions_pre", "impressions_post", "ctr_pre", "ctr_post", "position_pre", 
+                     "position_post", "Dif", "Estado", "Exclusion"]]
+
+            # Renombrar las columnas para que coincidan con la especificación
+            df = df.rename(columns={
+                "page": "Page",
+                "query": "Query",
+                "clicks_pre": "Clicks Pre",
+                "clicks_post": "Clicks Post",
+                "impressions_pre": "Impressions Pre",
+                "impressions_post": "Impressions Post",
+                "ctr_pre": "CTR Pre",
+                "ctr_post": "CTR Post",
+                "position_pre": "Position Pre",
+                "position_post": "Position Post"
+            })
 
             # Mostrar el DataFrame resultante
             st.dataframe(df)
