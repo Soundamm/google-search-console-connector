@@ -867,14 +867,6 @@ with tab1:
         )
 
 with tab2:
-
-import streamlit as st
-import pandas as pd
-import re
-
-# ... (código existente)
-
-with tab2:
     st.write("")
     st.write("")
 
