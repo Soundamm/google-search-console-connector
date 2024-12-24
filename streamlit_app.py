@@ -40,7 +40,7 @@ RowCap = 100000
 
 ###############################################################################
 
-tab1, tab2 = st.tabs(["Extractor", "Dataframe"])
+tab1, tab2 = st.tabs(["Extractor", "Comparativa períodos"])
 
 with tab1:
 
