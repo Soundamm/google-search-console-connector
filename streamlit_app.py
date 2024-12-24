@@ -129,10 +129,6 @@ with tab1:
 
     st.sidebar.write("")
 
-    st.sidebar.caption(
-        "Made in 🎈 [Streamlit](https://www.streamlit.io/), by [Charly Wargnier](https://www.charlywargnier.com/)."
-    )
-
     try:
 
         if st.session_state.my_token_received == False:
@@ -265,16 +261,16 @@ with tab1:
 
                 st.write("")
 
-                with st.expander("✨ Advanced Filters", expanded=False):
+                with st.expander("✨ Filtros avanzados", expanded=False):
 
                     col1, col2, col3 = st.columns(3)
 
                     with col1:
                         filter_page_or_query = st.selectbox(
-                            "Dimension to filter #1",
+                            "Dimension para filtrar #1",
                             ("query", "page", "device", "searchAppearance", "country"),
                             help="""
-                            You can choose to filter dimensions and apply filters before executing a query.
+                            Puedes elegir una dimension para filtrar.
                             """,
                         )
 
@@ -303,11 +299,11 @@ with tab1:
 
                     with col1:
                         filter_page_or_query2 = st.selectbox(
-                            "Dimension to filter #2",
+                            "Dimension para filtrar #2",
                             ("query", "page", "device", "searchAppearance", "country"),
                             key="filter_page_or_query2",
                             help="""
-                            You can choose to filter dimensions and apply filters before executing a query.
+                            Puedes elegir una segunda dimension para filtrar.
                             """,
                         )
 
@@ -338,11 +334,11 @@ with tab1:
 
                     with col1:
                         filter_page_or_query3 = st.selectbox(
-                            "Dimension to filter #3",
+                            "Dimension para filtrar #3",
                             ("query", "page", "device", "searchAppearance", "country"),
                             key="filter_page_or_query3",
                             help="""
-                            You can choose to filter dimensions and apply filters before executing a query.
+                            Puedes elegir una tercera dimension para filtrar.
                             """,
                         )
 
@@ -374,7 +370,7 @@ with tab1:
                     st.write("")
 
                 submit_button = st.form_submit_button(
-                    label="Fetch GSC API data", on_click=charly_form_callback
+                    label="Extracción de datos", on_click=charly_form_callback
                 )
 
             if (nested_dimension != "none") and (nested_dimension_2 != "none"):
@@ -385,7 +381,7 @@ with tab1:
                     or (nested_dimension == nested_dimension_2)
                 ):
                     st.warning(
-                        "🚨 Dimension and nested dimensions cannot be the same, please make sure you choose unique dimensions."
+                        "🚨 La dimensiones primeras y secundarias no pueden ser iguales, por favor, asegúrate de usar dimensiones únicas."
                     )
                     st.stop()
 
