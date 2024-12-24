@@ -434,13 +434,13 @@ with tab1:
 
                 with st.form(key="my_form2"):
 
-                    webpropertiesNEW = st.selectbox("Select web property", lst)
+                    webpropertiesNEW = st.selectbox("Seleccionar propiedad web", lst)
 
                     col1, col2, col3 = st.columns(3)
 
                     with col1:
                         dimension = st.selectbox(
-                            "Dimension",
+                            "Dimension 1",
                             (
                                 "query",
                                 "page",
@@ -454,7 +454,7 @@ with tab1:
 
                     with col2:
                         nested_dimension = st.selectbox(
-                            "Nested dimension",
+                            "Dimension 2",
                             (
                                 "none",
                                 "query",
@@ -469,7 +469,7 @@ with tab1:
 
                     with col3:
                         nested_dimension_2 = st.selectbox(
-                            "Nested dimension 2",
+                            "Dimension 3",
                             (
                                 "none",
                                 "query",
