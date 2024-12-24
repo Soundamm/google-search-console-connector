@@ -794,13 +794,6 @@ with tab1:
 
             with col1:
                 st.caption("")
-                check_box = st.checkbox(
-                    "Ag-Grid mode", help="Tick this box to see your data in Ag-grid!"
-                )
-                st.caption("")
-
-            with col2:
-                st.caption("")
                 st.checkbox(
                     "Widen layout",
                     key="widen",
