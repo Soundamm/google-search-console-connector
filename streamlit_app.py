@@ -4,7 +4,6 @@ import streamlit as st
 import pandas as pd
 import re
 from datetime import date, timedelta
-import locale
 
 # imports for search console libraries
 import searchconsole
@@ -950,11 +949,19 @@ with tab2:
                 "position_post": "Position Post"
             })
 
-            # Cambiar la configuración regional de Pandas
-            locale.setlocale(locale.LC_ALL, 'es_ES.UTF-8')
 
             # Mostrar el DataFrame resultante
-            st.dataframe(df)
+            st.dataframe(df.style.format({
+                'Clicks Pre': '{:.1f}', 
+                'Clicks Post': '{:.1f}', 
+                'Impressions Pre': '{:.1f}', 
+                'Impressions Post': '{:.1f}', 
+                'CTR Pre': '{:.1f}', 
+                'CTR Post': '{:.1f}', 
+                'Position Pre': '{:.1f}', 
+                'Position Post': '{:.1f}', 
+                'Dif': '{:.1f}'  
+            }))
 
             # Botón para descargar el DataFrame como CSV
             csv = df.to_csv(index=False).encode('utf-8')
