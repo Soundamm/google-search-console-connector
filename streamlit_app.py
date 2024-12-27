@@ -4,6 +4,7 @@ import streamlit as st
 import pandas as pd
 import re
 from datetime import date, timedelta
+import locale
 
 # imports for search console libraries
 import searchconsole
@@ -948,6 +949,9 @@ with tab2:
                 "position_pre": "Position Pre",
                 "position_post": "Position Post"
             })
+
+            # Cambiar la configuración regional de Pandas
+            locale.setlocale(locale.LC_ALL, 'es_ES.UTF-8')
 
             # Mostrar el DataFrame resultante
             st.dataframe(df)
