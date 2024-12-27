@@ -949,19 +949,14 @@ with tab2:
                 "position_post": "Position Post"
             })
 
+            # Formatear las columnas con un decimal usando applymap()
+            columnas_a_formatear = ["Clicks Pre", "Clicks Post", "Impressions Pre", "Impressions Post", 
+                                     "CTR Pre", "CTR Post", "Position Pre", "Position Post", "Dif"]
+            for columna in columnas_a_formatear:
+                df[columna] = df[columna].applymap(lambda x: "{:.1f}".format(x))
 
             # Mostrar el DataFrame resultante
-            st.dataframe(df.style.format({
-                'Clicks Pre': '{:.1f}', 
-                'Clicks Post': '{:.1f}', 
-                'Impressions Pre': '{:.1f}', 
-                'Impressions Post': '{:.1f}', 
-                'CTR Pre': '{:.1f}', 
-                'CTR Post': '{:.1f}', 
-                'Position Pre': '{:.1f}', 
-                'Position Post': '{:.1f}', 
-                'Dif': '{:.1f}'  
-            }))
+            st.dataframe(df)
 
             # Botón para descargar el DataFrame como CSV
             csv = df.to_csv(index=False).encode('utf-8')
