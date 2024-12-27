@@ -877,8 +877,8 @@ with tab2:
 
     if uploaded_file_pre and uploaded_file_post:
         # Leer los datos de los archivos CSV
-        df_pre = pd.read_csv(uploaded_file_pre)
-        df_post = pd.read_csv(uploaded_file_post)
+        df_pre = pd.read_csv(uploaded_file_pre, decimal=".")
+        df_post = pd.read_csv(uploaded_file_post, decimal=".")
 
         try:
             # Unir los dos DataFrames, validando que no haya duplicados
