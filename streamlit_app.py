@@ -949,12 +949,6 @@ with tab2:
                 "position_post": "Position Post"
             })
 
-            # Formatear las columnas con un decimal usando applymap()
-            columnas_a_formatear = ["Clicks Pre", "Clicks Post", "Impressions Pre", "Impressions Post", 
-                                     "CTR Pre", "CTR Post", "Position Pre", "Position Post", "Dif"]
-            for columna in columnas_a_formatear:
-                df[columna] = df[columna].applymap(lambda x: "{:.1f}".format(x))
-
             # Mostrar el DataFrame resultante
             st.dataframe(df)
 
