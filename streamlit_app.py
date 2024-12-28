@@ -695,7 +695,7 @@ with tab1:
 
                 else:
                     pass
-
+        if submit_button:
             def get_search_console_data(webproperty):
                 if webproperty is not None:
                     report = (
