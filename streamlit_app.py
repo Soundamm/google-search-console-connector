@@ -877,8 +877,8 @@ with tab2:
 
     if uploaded_file_pre and uploaded_file_post:
         # Leer los datos de los archivos CSV
-        df_pre = pd.read_csv(uploaded_file_pre, decimal=".")
-        df_post = pd.read_csv(uploaded_file_post, decimal=".")
+        df_pre = pd.read_csv(uploaded_file_pre)
+        df_post = pd.read_csv(uploaded_file_post)
 
         try:
             # Unir los dos DataFrames, validando que no haya duplicados
@@ -962,4 +962,4 @@ with tab2:
             )
 
         except pd.errors.MergeError:
-            st.error("Error: Se encontraron duplas de 'page' y 'query' en los archivos CSV. Por favor, revisa tus archivos e intenta de nuevo.")
+            st.error("Error: No se encontraron duplas de 'page' y 'query' en los archivos CSV. Por favor, revisa tus archivos e intenta de nuevo.")
