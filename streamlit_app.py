@@ -950,7 +950,7 @@ with tab2:
             })
 
             # Antes de exportar, convertir las columnas numéricas al formato deseado
-            columns_to_round = ["Clicks Pre", "Clicks Post". "Impressions Pre", "Impressions Post"]
+            columns_to_round = ["Clicks Pre", "Clicks Post", "Impressions Pre", "Impressions Post"]
             df[columns_to_round] = df[columns_to_round].astype(int)
 
             # Definir el formato para las columnas decimales
