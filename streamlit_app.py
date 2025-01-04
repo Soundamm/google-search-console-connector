@@ -883,7 +883,7 @@ with tab2:
         try:
             # Unir los dos DataFrames, validando que no haya duplicados
             df = pd.merge(df_pre, df_post, on=["page", "query"], how="outer", suffixes=("_pre", "_post"), validate="one_to_one")
-
+            
             # Crear la columna "Tipología"
             def obtener_tipologia(pagina):
                 if re.search(r"categoria", pagina):
@@ -949,11 +949,21 @@ with tab2:
                 "position_post": "Position Post"
             })
 
+            # Antes de exportar, convertir las columnas numéricas al formato deseado
+            columns_to_round = ["Clicks Pre", "Clicks Post". "Impressions Pre", "Impressions Post"]
+            df[columns_to_round] = df[columns_to_round].astype(int)
+
+            # Definir el formato para las columnas decimales
+            decimal_columns = ["CTR Pre", "CTR Post", "Position Pre", "Position Post", "Dif"]
+            for col in decimal_columns:
+                df[col] = df[col].map(lambda x: str(x).replace('.', ','))
+
             # Mostrar el DataFrame resultante
             st.dataframe(df)
 
             # Botón para descargar el DataFrame como CSV
-            csv = df.to_csv(index=False).encode('utf-8')
+            #csv = df.to_csv(index=False).encode('utf-8')
+            csv = df.to_csv(index=False, decimal=',').encode('utf-8')
             st.download_button(
                 label="Descargar CSV",
                 data=csv,
