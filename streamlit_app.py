@@ -66,7 +66,7 @@ with tab1:
     def charly_form_callback():
         # st.write(st.session_state.my_token_input)
         st.session_state.my_token_received = True
-        code = st.experimental_get_query_params()["code"][0]
+        code = st.query_params["code"][0]
         st.session_state.my_token_input = code
 
     with st.sidebar.form(key="my_form"):
@@ -866,6 +866,8 @@ with tab1:
             "⛔ It seems you haven’t correctly configured Google Search Console! Click [here](https://support.google.com/webmasters/answer/9008080?hl=en) for more information on how to get started!"
         )
 
+
+# Segunda pestaña: Comparador de períodos
 
 with tab2:
     st.write("")
