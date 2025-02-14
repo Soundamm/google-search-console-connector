@@ -403,7 +403,7 @@ with tab1:
 
         if st.session_state.my_token_received == True:
 
-            @st.experimental_singleton
+            @st.cache_resource
             def get_account_site_list_and_webproperty(token):
                 flow.fetch_token(code=token)
                 credentials = flow.credentials
