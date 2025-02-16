@@ -96,7 +96,7 @@ with tab1:
             "installed": {
                 "client_id": clientId,
                 "client_secret": clientSecret,
-                "redirect_uris": [],
+                "redirect_uris": [redirectUri],
                 "auth_uri": "https://accounts.google.com/o/oauth2/auth",
                 "token_uri": "https://accounts.google.com/o/oauth2/token",
             }
