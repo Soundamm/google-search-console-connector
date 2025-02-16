@@ -66,7 +66,7 @@ with tab1:
     def charly_form_callback():
         # st.write(st.session_state.my_token_input)
         st.session_state.my_token_received = True
-        code = st.query_params["code"][0]
+        code = st.experimental_get_query_params()["code"][0]
         st.session_state.my_token_input = code
 
     with st.sidebar.form(key="my_form"):
